@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Real para Bitcoin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script>
+        async function atualizarCotacao() {
+            try {
+                let response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCBRL');
+                let data = await response.json();
+                return parseFloat(data.price);
+            } catch (error) {
+                console.error('Erro ao buscar cotação:', error);
+                return null;
+            }
+        }
+
+        async function converter() {
+            let real = parseFloat(document.getElementById('valorReal').value.replace('R$', '').replace(',', '.'));
+            if (isNaN(real) || real <= 0) {
+                alert('Digite um valor válido!');
+                return;
+            }
+
+            let cotacao = await atualizarCotacao();
+            if (!cotacao) {
+                alert('Erro ao obter a cotação do Bitcoin. Tente novamente mais tarde.');
+                return;
+            }
+            
+            let valorComDesconto = real * 0.9; // Aplica 10% de desconto
+            let valorBitcoin = valorComDesconto / cotacao;
+            let valorFormatado = `₿${valorBitcoin.toFixed(8)}`;
+            document.getElementById('valorBitcoin').innerText = valorFormatado;
+        }
+
+        function formatarMoeda(event) {
+            let valor = event.target.value.replace(/\D/g, '');
+            valor = (parseFloat(valor) / 100).toFixed(2);
+            event.target.value = `R$${valor.replace('.', ',')}`;
+        }
+
+        function copiarBitcoin() {
+            let texto = document.getElementById('valorBitcoin').innerText;
+            navigator.clipboard.writeText(texto).then(() => {
+                alert('Valor copiado: ' + texto);
+            }).catch(err => {
+                console.error('Erro ao copiar:', err);
+            });
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            margin: 50px;
+            background: #f0f0f0;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            width: 500px;
+            text-align: left;
+            position: relative;
+        }
+        .header {
+            background: orange;
+            color: white;
+            padding: 20px;
+            font-weight: 600;
+            font-size: 26px;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            text-align: center;
+        }
+        input {
+            padding: 15px;
+            width: calc(100% - 30px);
+            font-size: 24px;
+            margin-top: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            display: block;
+            text-align: left;
+        }
+        button {
+            background: orange;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 22px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .info {
+            color: gray;
+            font-size: 18px;
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .ao-vivo {
+            color: red;
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 20px;
+        }
+        h3, p {
+            text-align: center;
+            font-size: 26px;
+        }
+        .copiar-btn {
+            background: #007bff;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Conversor ao vivo:</div>
+        <label>Digite o valor da venda:</label>
+        <input type="text" id="valorReal" placeholder="R$0,00" oninput="formatarMoeda(event)">
+        <span class="info">Desconto: -10%</span>
+        <button onclick="converter()">Converter</button>
+        <h3>Valor em Bitcoin:</h3>
+        <p id="valorBitcoin">₿0.00000000</p>
+        <button class="copiar-btn" onclick="copiarBitcoin()">Copiar</button>
+        <span class="ao-vivo">● ao vivo</span>
+    </div>
+</body>
+</html>
