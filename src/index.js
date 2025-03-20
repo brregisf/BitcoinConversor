@@ -56,3 +56,4 @@ function atualizarPlaceholder() {
   input.placeholder = moedaSelecionada === "USD" ? "0.00" : "0,00";
 }
 
+
