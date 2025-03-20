@@ -12,30 +12,27 @@
   }
 
   async function converter() {
-    let real = parseFloat(
-      document
-        .getElementById("valorReal")
-        .value.replace("R$", "")
-        .replace(",", ".")
-    );
-    if (isNaN(real) || real <= 0) {
-      alert("Digite um valor válido!");
-      return;
+    let valorFormatado = document.getElementById("valorReal").value;
+    
+    // Remove o "R$" e substitui os pontos por nada e a vírgula por ponto
+    let valorNumerico = parseFloat(valorFormatado.replace("R$", "").replace(/\./g, "").replace(",", "."));
+    
+    if (isNaN(valorNumerico) || valorNumerico <= 0) {
+        alert("Digite um valor válido!");
+        return;
     }
 
     let cotacao = await atualizarCotacao();
     if (!cotacao) {
-      alert(
-        "Erro ao obter a cotação do Bitcoin. Tente novamente mais tarde."
-      );
-      return;
+        alert("Erro ao obter a cotação do Bitcoin. Tente novamente mais tarde.");
+        return;
     }
 
-    let valorComDesconto = real * 0.9; // Aplica 10% de desconto
+    let valorComDesconto = valorNumerico * 0.9; // Aplica 10% de desconto
     let valorBitcoin = valorComDesconto / cotacao;
-    let valorFormatado = `₿${valorBitcoin.toFixed(8)}`;
-    document.getElementById("valorBitcoin").innerText = valorFormatado;
-  }
+    let valorBitcoinFormatado = `₿${valorBitcoin.toFixed(8)}`;
+    document.getElementById("valorBitcoin").innerText = valorBitcoinFormatado;
+}
 
   function formatarMoeda(event) {
     let valor = event.target.value.replace(/\D/g, ""); // Remove tudo que não for número
