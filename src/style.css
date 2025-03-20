@@ -74,13 +74,25 @@ button {
     margin-top: 10px;
     text-align: center;
 }
+
+@keyframes piscar {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
 .ao-vivo {
-    color: red;
+    color: black;
     font-weight: bold;
     display: block;
     margin-top: 15px;
     text-align: center;
     font-size: 20px;
+}
+
+.ao-vivo .ponto {
+    color: red;
+    animation: piscar 1s infinite;
 }
 
 .powered {
@@ -158,3 +170,4 @@ h3, p {
         animation: piscar 1s infinite;
     }
 }
+
