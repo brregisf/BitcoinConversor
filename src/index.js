@@ -38,10 +38,17 @@
   }
 
   function formatarMoeda(event) {
-    let valor = event.target.value.replace(/\D/g, "");
-    valor = (parseFloat(valor) / 100).toFixed(2);
-    event.target.value = `R$${valor.replace(".", ",")}`;
-  }
+    let valor = event.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+    valor = (parseFloat(valor) / 100).toFixed(2); // Converte para número e mantém duas casas decimais
+
+    // Formata com separadores de milhares e mantém a vírgula para os centavos
+    let partes = valor.split(".");
+    let parteInteira = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    let parteDecimal = partes[1];
+
+    event.target.value = `R$${parteInteira},${parteDecimal}`;
+}
+
 
   function copiarBitcoin() {
     let texto = document.getElementById("valorBitcoin").innerText;
@@ -54,3 +61,7 @@
         console.error("Erro ao copiar:", err);
       });
   }
+
+  ScrollReveal({ distance: '60px' });
+  ScrollReveal().reveal('body', { origin: 'bottom' }, { duration: 1000 });
+  ScrollReveal().reveal('body', { duration: 1000 });
