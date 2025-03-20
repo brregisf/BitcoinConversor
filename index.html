@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Conversor de Real para Bitcoin</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+    <title>Conversor de Moeda para Bitcoin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="src/style.css" />
-  </head>
-
-  <body>
+</head>
+<body>
     <h1><img class="BitcoinLogo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1024px-Bitcoin.svg.png" alt="BitcoinLogo"></h1>
     <div class="tittle">Bitcoin Conversor</div>
     <div class="container">
-      <div class="header">Conversor ao vivo:</div>
-      <label>Digite o valor da venda:</label>
-      <input
-        type="text"
-        id="valorReal"
-        placeholder="R$0,00"
-        oninput="formatarMoeda(event)"
-      />
-      <span class="info">Desconto: -10%</span>
-      <button onclick="converter()">Converter</button>
-      <h3>Valor em Bitcoin:</h3>
-      <p id="valorBitcoin">₿0.00000000</p>
-      <button class="copiar-btn" onclick="copiarBitcoin()">Copiar</button>
-      <p class="ao-vivo"><span class="ponto">●</span>Ao Vivo</p>
-      <span class="powered">Powered by brregisf</span>
+        <div class="header">Conversor ao vivo:</div>
+        <label>Digite o valor da venda:</label>
+        <div class="input-group">
+            <select id="moeda" onchange="atualizarPlaceholder()">
+                <option value="BRL">R$</option>
+                <option value="USD">U$</option>
+            </select>
+            <input type="text" id="valorMoeda" placeholder="0,00" oninput="formatarMoeda(event)" />
+        </div>
+        <span class="info">Desconto da venda: -10%</span>
+        <button onclick="converter()">Converter</button>
+        <h3>Valor em Bitcoin:</h3>
+        <p id="valorBitcoin">₿0.00000000</p>
+        <button class="copiar-btn" onclick="copiarBitcoin()">Copiar</button>
+        <p class="ao-vivo"><span class="ponto">●</span>Ao Vivo</p>
+        <span class="powered">Powered by brregisf</span>
     </div>
-    <script src="https://unpkg.com/scrollreveal"></script>
     <script src="src/index.js"></script>
-  </body>
+</body>
 </html>
